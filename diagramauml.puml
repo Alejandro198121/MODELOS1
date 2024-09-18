@@ -32,10 +32,8 @@ package pack.controller {
 	}
 
 	StudentServlet --> GestorEstudiantes
-	StudentServlet --> HttpServletRequest
-	StudentServlet --> HttpServletResponse
 	StudentServlet --> EstudianteDTO
-	StudentServlet --> JSONObject
+	
 
 
 	class TeachersServlet {
@@ -45,10 +43,8 @@ package pack.controller {
 	}
 
 	TeachersServlet --> GestorEstudiantes
-	TeachersServlet --> HttpServletRequest
-	TeachersServlet --> HttpServletResponse
 	TeachersServlet --> EstudianteDTO
-	TeachersServlet --> JSONObject
+	
 }
 
 
