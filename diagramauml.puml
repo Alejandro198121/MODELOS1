@@ -1,116 +1,126 @@
 @startuml
 skinparam linetype ortho
 package pack.controller {
-	class GestorEstudiantes {
-		- EstudentDAO gE
-		--
-		+ GestorEstudiantes()
-		+ boolean exists(EstudianteDTO estdto) throws IOException
-		+ boolean exists(String id) throws IOException
-		+ void create(EstudianteDTO estdto) throws IOException
-		+ EstudianteDTO get(String id)
-		+ void edit(EstudianteDTO estdto) throws IOException
-		+ void delete(String id) throws IOException
-	}
 
-	class GestorProfesores {
-		- TeacherDAO gT
-		--
-		+ GestorProfesores()
-		+ boolean exists(ProfesorDTO prfdto) throws IOException
-		+ boolean exists(String id) throws IOException
-		+ void create(ProfesorDTO prfdto) throws IOException
-		+ ProfesorDTO get(String id)
-		+ void edit(ProfesorDTO prfdto) throws IOException
-		+ void delete(String id) throws IOException
-	}
+    class GestorID {
+        -EstudentDAO gE
+        -TeacherDAO gT
+        +GestorID()
+        +exists(estdto: EstudianteDTO): boolean
+        +exists(estdto: ProfesorDTO): boolean
+        +exists(id: String): boolean
+    }
 
-	class StudentServlet {
-		+ void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-		+ void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-		+ void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	}
+    class GestorEstudiantes {
+        - EstudentDAO gE
+        --
+        + GestorEstudiantes()
+        + boolean exists(EstudianteDTO estdto) throws IOException
+        + boolean exists(String id) throws IOException
+        + void create(EstudianteDTO estdto) throws IOException
+        + EstudianteDTO get(String id)
+        + void edit(EstudianteDTO estdto) throws IOException
+        + void delete(String id) throws IOException
+    }
 
-	StudentServlet --> GestorEstudiantes
-	StudentServlet --> EstudianteDTO
-	
+    class GestorProfesores {
+        - TeacherDAO gT
+        --
+        + GestorProfesores()
+        + boolean exists(ProfesorDTO prfdto) throws IOException
+        + boolean exists(String id) throws IOException
+        + void create(ProfesorDTO prfdto) throws IOException
+        + ProfesorDTO get(String id)
+        + void edit(ProfesorDTO prfdto) throws IOException
+        + void delete(String id) throws IOException
+    }
+
+    class StudentServlet {
+        +doPost(request: HttpServletRequest, response: HttpServletResponse): void
+        +doGet(request: HttpServletRequest, response: HttpServletResponse): void
+        +doDelete(request: HttpServletRequest, response: HttpServletResponse): void
+    }
+
+    StudentServlet --> GestorEstudiantes
+    StudentServlet --> EstudianteDTO
 
 
-	class TeachersServlet {
-		+ void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-		+ void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-		+ void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	}
 
-	TeachersServlet --> GestorEstudiantes
-	TeachersServlet --> EstudianteDTO
-	
+    class TeachersServlet {
+        +doPost(request: HttpServletRequest, response: HttpServletResponse): void
+        +doGet(request: HttpServletRequest, response: HttpServletResponse): void
+        +doDelete(request: HttpServletRequest, response: HttpServletResponse): void
+    }
+
+    TeachersServlet --> GestorEstudiantes
+    TeachersServlet --> EstudianteDTO
+
 }
 
 
 package pack.model.persistence {
-	class Archive {
-		- ObjectInputStream in
-		- ObjectOutputStream out
-		- File fE
-		- File fP
-		--
-		+ Archive()
-		+ ArrayList<Estudiante> leerEstudiantes() throws IOException, ClassNotFoundException
-		+ ArrayList<Profesor> leerProfesores() throws IOException, ClassNotFoundException
-		+ void guardarEstudiantes(ArrayList<Estudiante> x) throws IOException
-		+ void guardarProfesores(ArrayList<Profesor> x) throws IOException
-		+ File getfE()
-		+ void setfE(File fE)
-		+ File getfP()
-		+ void setfP(File fP)
-	}
+    class Archive {
+        - ObjectInputStream in
+        - ObjectOutputStream out
+        - File fE
+        - File fP
+        --
+        + Archive()
+        + ArrayList<Estudiante> leerEstudiantes() throws IOException, ClassNotFoundException
+        + ArrayList<Profesor> leerProfesores() throws IOException, ClassNotFoundException
+        + void guardarEstudiantes(ArrayList<Estudiante> x) throws IOException
+        + void guardarProfesores(ArrayList<Profesor> x) throws IOException
+        + File getfE()
+        + void setfE(File fE)
+        + File getfP()
+        + void setfP(File fP)
+    }
 
-	Archive --> Estudiante
-	Archive --> Profesor
-	Archive --> EstudianteDTO
-	Archive --> ProfesorDTO
-	Archive --> MapHandler
+    Archive --> Estudiante
+    Archive --> Profesor
+    Archive --> EstudianteDTO
+    Archive --> ProfesorDTO
+    Archive --> MapHandler
 
-	class EstudentDAO {
-		- ArrayList<Estudiante> list
-		- Archive aR
-		--
-		+ EstudentDAO() throws IOException, ClassNotFoundException
-		+ void actualizar() throws IOException, ClassNotFoundException
-		+ ArrayList<String> read()
-		+ boolean create(Estudiante x) throws IOException
-		+ boolean delete(String x) throws IOException
-		+ boolean update(Estudiante x, Estudiante y) throws IOException
-		+ boolean find(Estudiante x)
-		+ Estudiante findID(String id)
-		+ ArrayList<String> ids()
-		- void rWrite() throws IOException
-	}
+    class EstudentDAO {
+        - ArrayList<Estudiante> list
+        - Archive aR
+        --
+        + EstudentDAO() throws IOException, ClassNotFoundException
+        + void actualizar() throws IOException, ClassNotFoundException
+        + ArrayList<String> read()
+        + boolean create(Estudiante x) throws IOException
+        + boolean delete(String x) throws IOException
+        + boolean update(Estudiante x, Estudiante y) throws IOException
+        + boolean find(Estudiante x)
+        + Estudiante findID(String id)
+        + ArrayList<String> ids()
+        - void rWrite() throws IOException
+    }
 
-	EstudentDAO --> Estudiante
-	EstudentDAO --> Archive
-	EstudentDAO --> InterfaceDao
-	class EstudianteDTO {
-		- String nombre
-		- String id
-		- int edad
-		- String facultad
-		- float promedio
-		--
-		+ float getPromedio()
-		+ void setPromedio(float promedio)
-		+ String getNombre()
-		+ void setNombre(String nombre)
-		+ String getId()
-		+ void setId(String id)
-		+ int getEdad()
-		+ void setEdad(int edad)
-		+ String getFacultad()
-		+ void setFacultad(String facultad)
-	}
+    EstudentDAO --> Estudiante
+    EstudentDAO --> Archive
+    EstudentDAO --> InterfaceDao
+    class EstudianteDTO {
+        - String nombre
+        - String id
+        - int edad
+        - String facultad
+        - float promedio
+        --
+        + float getPromedio()
+        + void setPromedio(float promedio)
+        + String getNombre()
+        + void setNombre(String nombre)
+        + String getId()
+        + void setId(String id)
+        + int getEdad()
+        + void setEdad(int edad)
+        + String getFacultad()
+        + void setFacultad(String facultad)
+    }
 
-	 interface InterfaceDao<Type> {
+    interface InterfaceDao<Type> {
         + ArrayList<String> read()
         + boolean create(Type x) throws IOException
         + boolean delete(String x) throws IOException
@@ -137,7 +147,7 @@ package pack.model.persistence {
 
     InterfaceDao <|-[dashed]- TeacherDAO
 
-	class MapHandler {
+    class MapHandler {
         + static EstudianteDTO estudianteToDTO(Estudiante x)
         + static Estudiante dTOToEstudiante(EstudianteDTO x)
         + static ProfesorDTO profesorToDTO(Profesor x)
@@ -153,7 +163,7 @@ package pack.model.persistence {
     MapHandler --> Profesor
     MapHandler --> ProfesorDTO
 
-	class ProfesorDTO {
+    class ProfesorDTO {
         - String nombre
         - String id
         - int edad
@@ -216,5 +226,7 @@ package pack.model {
 
     Estudiante -|> Persona
     Profesor -|> Persona
+
+
 }
 @enduml
