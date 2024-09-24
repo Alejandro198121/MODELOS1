@@ -3,6 +3,7 @@ package view;
 import java.util.Scanner;
 
 public class VistaConsola {
+
 	private Scanner sc;
 
 	public VistaConsola() {
@@ -18,5 +19,12 @@ public class VistaConsola {
 		System.out.print(mensaje);
 		dato = sc.nextInt();
 		return dato;
+	}
+
+	public String leerString(String mensaje) {
+		String cadenaTexto = "";
+		System.out.println(mensaje);
+		cadenaTexto = sc.next();
+		return cadenaTexto;
 	}
 }
